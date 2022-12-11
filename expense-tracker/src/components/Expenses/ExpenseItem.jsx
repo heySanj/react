@@ -2,7 +2,13 @@ import "./ExpenseItem.css";
 import ExpenseDate from "./ExpenseDate";
 import Card from "../UI/Card";
 
-function ExpenseItem(props) {
+const ExpenseItem = (props) => {
+
+  const clickHandler = () => {
+    // What to do when clicked
+    console.log("clicked!")
+  }
+
   return (
     // You can only return 1 root element! --> everything needs to be wrapped in a div
     <Card className="expense-item">
@@ -11,6 +17,9 @@ function ExpenseItem(props) {
         <h2>{props.title}</h2>
         <div className="expense-item__price">${props.amount}</div>
       </div>
+
+      <button onClick={clickHandler}>Change Title</button>
+
     </Card>
   );
 }
