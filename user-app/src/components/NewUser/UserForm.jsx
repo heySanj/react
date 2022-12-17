@@ -19,18 +19,34 @@ const UserForm = (props) => {
         // We will handle the submission with javascript
         event.preventDefault();
 
-        // Pull the data from the state
-        const userData = {
-            name: enteredName,
-            age: +enteredAge,
-            id: Math.random().toString()
-        };
+        // Check for errors
+        if(!enteredName || !enteredAge || isNaN(enteredAge)){
+            props.onError({
+                title: "Invalid input",
+                message: "Please enter a valid name and age (non-empty values)."
+            })
+        } else if (enteredAge < 0) {
+            props.onError({
+                title: "Invalid input",
+                message: "Please enter a valid age (> 0)."
+            })
+        } else {
+            // Pull the data from the state
+            const userData = {
+                name: enteredName,
+                age: +enteredAge,
+                id: Math.random().toString()
+            };
 
-        // Submit data and reset values
-        props.onSaveData(userData);
+            // Submit data and reset values
+            props.onSaveData(userData);
 
-        setEnteredName("");
-        setEnteredAge("");
+            setEnteredName("");
+            setEnteredAge("");
+        }
+
+
+
 
     };
 
