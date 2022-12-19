@@ -1,29 +1,30 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext, useRef } from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
-
+import AuthContext from "../../context/auth-context";
+import Input from "../UI/Input/Input";
 
 const loginReducer = (prevState, action) => {
-  const newState = {...prevState}
+    const newState = { ...prevState };
 
-  if (action.type === "USER_INPUT_EMAIL") {
-      newState.email = action.val;
-      newState.emailValid = action.val.includes("@");
-  }
+    if (action.type === "USER_INPUT_EMAIL") {
+        newState.email = action.val;
+        newState.emailValid = action.val.includes("@");
+    }
 
-  if (action.type === "USER_INPUT_PASS") {
-      newState.pass = action.val;
-      newState.passValid = action.val.trim().length > 6;
-  }
+    if (action.type === "USER_INPUT_PASS") {
+        newState.pass = action.val;
+        newState.passValid = action.val.trim().length > 6;
+    }
 
-  if (action.type === "INPUT_BLUR") {
-      newState.emailValid = prevState.email.includes("@");
-      newState.passValid = prevState.pass.trim().length > 6;
-  }
+    if (action.type === "INPUT_BLUR") {
+        newState.emailValid = prevState.email.includes("@");
+        newState.passValid = prevState.pass.trim().length > 6;
+    }
 
-  return newState;
+    return newState;
 };
 
 const Login = (props) => {
@@ -39,8 +40,15 @@ const Login = (props) => {
 
     // ==================================================================================================
 
+    const authCtx = useContext(AuthContext);
+
+    const emailInputRef = useRef();
+    const passInputRef = useRef();
+
+    // ==================================================================================================
+
     useEffect(() => {
-        // Only execute this function after a 500ms delay
+        // Only execute this function after a 200ms delay
         // IF the user types anything else, this timer will be cleared due to the cleanup function
         // and the timer will restart; useful for limiting the frequency of function calls
         const timerID = setTimeout(() => {
@@ -53,7 +61,7 @@ const Login = (props) => {
         return () => {
             clearTimeout(timerID); // Clear the last timer if it has not yet executed
         };
-    }, [ loginState.emailValid, loginState.passValid ]); // Only run this effect if ANY of these dependancies change
+    }, [loginState.emailValid, loginState.passValid]); // Only run this effect if ANY of these dependancies change
 
     // ==================================================================================================
 
@@ -75,45 +83,45 @@ const Login = (props) => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        props.onLogin(loginState.email, loginState.pass);
+
+        if(formIsValid){
+            authCtx.onLogin(loginState.email, loginState.pass);
+        } else if (!loginState.emailValid){
+            emailInputRef.current.focus()
+        } else {
+            passInputRef.current.focus()
+        }
+
     };
 
     return (
         <Card className={classes.login}>
             <form onSubmit={submitHandler}>
-                <div
-                    className={`${classes.control} ${
-                        loginState.emailValid === false ? classes.invalid : ""
-                    }`}
-                >
-                    <label htmlFor="email">E-Mail</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={loginState.email}
-                        onChange={emailChangeHandler}
-                        onBlur={validateEmailHandler}
-                    />
-                </div>
-                <div
-                    className={`${classes.control} ${
-                        loginState.passValid === false ? classes.invalid : ""
-                    }`}
-                >
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={loginState.pass}
-                        onChange={passwordChangeHandler}
-                        onBlur={validatePasswordHandler}
-                    />
-                </div>
+                <Input
+                    ref={emailInputRef}
+                    label="Email"                    
+                    type="email"
+                    id="email"
+                    value={loginState.email}
+                    onChange={emailChangeHandler}
+                    onBlur={validateEmailHandler}
+                    isValid={loginState.emailValid}
+                />
+                <Input
+                    ref={passInputRef}
+                    label="Password"
+                    type="password"
+                    id="password"
+                    value={loginState.pass}
+                    onChange={passwordChangeHandler}
+                    onBlur={validatePasswordHandler}
+                    isValid={loginState.passValid}
+                />
                 <div className={classes.actions}>
                     <Button
                         type="submit"
                         className={classes.btn}
-                        disabled={!formIsValid}
+                        // disabled={!formIsValid}
                     >
                         Login
                     </Button>
