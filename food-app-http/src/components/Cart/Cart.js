@@ -38,23 +38,22 @@ const Cart = (props) => {
     );
 
     const clearCart = () => {
-        props.onClose()
-    }
-
+        cartCtx.emptyCart();
+        props.onClose();
+    };
 
     const submitOrderHandler = async (user) => {
         sendOrderRequest(
             {
                 url: "https://react-learn-114fb-default-rtdb.firebaseio.com/food-app/orders.json",
                 method: "POST",
-                body: {...user, items: cartCtx.items},
+                body: { ...user, items: cartCtx.items },
                 headers: {
                     "Content-Type": "application/json",
                 },
             },
             clearCart
         );
-
     };
 
     // Print out information for the user if content is still loading/errored out
@@ -67,7 +66,6 @@ const Cart = (props) => {
     if (isLoading) {
         content = <p>Sending Order...</p>;
     }
-
 
     return (
         <Modal onClose={props.onClose}>
@@ -90,7 +88,6 @@ const Cart = (props) => {
             />
 
             {content}
-
         </Modal>
     );
 };
