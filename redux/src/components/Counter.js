@@ -1,4 +1,4 @@
-// import { Component } from 'react'
+import { counterActions } from '../store/counterSlice'
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,27 +13,15 @@ const Counter = () => {
     // --------------------------------------------------------------------------
     // Redux automatically sets up the subscription when useSelector is used
     // Therefore this component will be updated with the latest data
-    const counter = useSelector((state) => state.counter);
-    const show = useSelector((state) => state.showCounter)
+    const counter = useSelector((state) => state.counter.counter);
+    const show = useSelector((state) => state.counter.showCounter)
 
-    const incrementHandler = () => {
-        dispatch({
-            type: "INCREMENT",
-        });
-    };
-
-    const decrementHandler = () => {
-        dispatch({
-            type: "DECREMENT",
-        });
-    };
-
-    const countHandler = () => {
-        dispatch({ type: 'count', amount: 5})
+    const countHandler = (event) => {
+        dispatch(counterActions.count(parseInt(event.target.value)))
     }
 
     const toggleCounterHandler = () => {
-        dispatch({ type: 'toggle'})
+        dispatch(counterActions.toggle())
     };
 
     return (
@@ -41,9 +29,10 @@ const Counter = () => {
             <h1>Redux Counter</h1>
             {show && <div className={classes.value}>{counter}</div>}
             <div>
-                <button onClick={decrementHandler}>-1</button>
-                <button onClick={incrementHandler}>+1</button>
-                <button onClick={countHandler}>+5</button>
+                <button onClick={countHandler} value={-5}>-5</button>
+                <button onClick={countHandler} value={-1}>-1</button>
+                <button onClick={countHandler} value={1}>+1</button>
+                <button onClick={countHandler} value={5}>+5</button>
             </div>
             <button onClick={toggleCounterHandler}>Toggle Counter</button>
         </main>
