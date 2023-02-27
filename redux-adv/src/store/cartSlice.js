@@ -2,15 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // ======================== CART SLICE ====================================
 
-const initialCartState = { showCart: false, items: [] };
+const initialCartState = { items: [] };
 
 const cartSlice = createSlice({
     name: "cart",
     initialState: initialCartState,
     reducers: {
-        toggleCart(state) {
-            state.showCart = !state.showCart;
-        },
         addItem(state, action) {
             // Check to see if the item is already in the cart
             const existingCartItemIndex = state.items.findIndex(
@@ -37,8 +34,8 @@ const cartSlice = createSlice({
 
             // IF there is only 1 of the item, remove the item from cart
             if (existingItem.amount <= 1) {
-                const updatedItems = state.items.filter((item) => item !== existingItem);
-                state.items = [...updatedItems]
+                state.items = state.items.filter((item) => item !== existingItem);
+
 
             // Otherwise, just reduce the amount by 1
             } else {

@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import cartReducer from "./cartSlice";
+import uiReducer from "./uiSlice"
 
 // Create a store (storage database)
 // configureStore allows multiple reducers (better organisation)
 const store = configureStore({
     reducer: {
-        cart: cartReducer
+        cart: cartReducer,
+        ui: uiReducer
     }
 });
 
