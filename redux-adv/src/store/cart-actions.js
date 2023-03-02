@@ -17,7 +17,7 @@ export const sendCartData = (cart) => {
         // Function that sends the request
         const sendRequest = async () => {
             const response = await fetch(
-                "https://react-learn-114fb-default-rtdb.firebaseio.com/cart.json",
+                `https://react-learn-114fb-default-rtdb.firebaseio.com/cart.json?auth=${process.env.REACT_APP_FIREBASE_TOKEN}`,
                 {
                     method: "PUT",
                     body: JSON.stringify(cart),
@@ -58,8 +58,7 @@ export const fetchCartData = () => {
     return async (dispatch) => {
         const fetchData = async () => {
             const response = await fetch(
-                "https://react-learn-114fb-default-rtdb.firebaseio.com/cart.json"
-            );
+                `https://react-learn-114fb-default-rtdb.firebaseio.com/cart.json`)
 
             if (!response.ok) {
                 throw new Error("Could not fetch cart data.");
