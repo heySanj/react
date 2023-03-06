@@ -6,11 +6,17 @@ import RootLayout from "./pages/Root";
 // Pages
 import HomePage from "./pages/HomePage";
 import EventsPage, { loader as eventsLoader } from "./pages/Events";
-import EventDetailPage from "./pages/EventDetailPage";
+import EventDetailPage, {
+    loader as detailsLoader,
+    deleteEvent as deleteEventAction,
+} from "./pages/EventDetailPage";
 import NewEventPage from "./pages/NewEventPage";
 import EditEventPage from "./pages/EditEventPage";
 import EventsRoot from "./pages/EventsRoot";
 
+import NewsletterPage, { action as newsletterAction } from './pages/Newsletter';
+
+import { action as sendEventDataAction } from "./components/EventForm";
 import ErrorPage from "./pages/Error";
 
 // Define your routes with createBrowserRouter
@@ -31,21 +37,37 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <EventsPage />,
-                        loader: eventsLoader // Loader functions are executed first, before the element is rendered
+                        loader: eventsLoader, // Loader functions are executed first, before the element is rendered
                     },
                     {
                         path: ":eventID", // :dynamic --> allows for variables to be placed in URLs
-                        element: <EventDetailPage />,
+                        id: "event-detail",
+                        loader: detailsLoader, // event details will be loaded onto all child routes/pages
+                        children: [
+                            {
+                                index: true,
+                                element: <EventDetailPage />,
+                                action: deleteEventAction,
+                            },
+                            {
+                                path: "edit",
+                                element: <EditEventPage />,
+                                action: sendEventDataAction
+                            },
+                        ],
                     },
+
                     {
                         path: "new",
                         element: <NewEventPage />,
-                    },
-                    {
-                        path: ":eventID/edit", // :dynamic --> allows for variables to be placed in URLs
-                        element: <EditEventPage />,
+                        action: sendEventDataAction,
                     },
                 ],
+            },
+            {
+                path: 'newsletter',
+                element: <NewsletterPage />,
+                action: newsletterAction,
             },
         ],
     },
