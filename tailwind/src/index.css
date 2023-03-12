@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Extend the components to write your own custom classes! */
+@layer components {
+
+    /* Custom tailwind classes! */
+    .sidebar-icon {
+        @apply relative flex items-center justify-center
+            h-24 w-24 mx-auto my-auto shadow-lg
+            bg-gray-700 text-green-400
+            hover:bg-green-400 hover:text-white
+            rounded-[50px] hover:rounded-xl
+            transition-all duration-300;
+    }
+
+    .sidebar-tooltip {
+        @apply absolute w-auto p-2 m-2 min-w-max left-36
+        rounded-md shadow-md
+        text-white bg-gray-900
+        text-xs font-bold
+        transition-all duration-100 scale-0 origin-left
+    }
+}
