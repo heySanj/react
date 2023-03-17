@@ -1,0 +1,16 @@
+.deleteButton{
+    float: right;
+}
+
+.deleteButton {
+    background-color: rgb(248, 66, 42);
+    color: rgb(245, 238, 226);
+    font-weight: 900;
+    border-radius: 3px;
+    border: none;
+    pointer-events: all;
+}
+.deleteButton:hover {
+    background-color: rgb(156, 20, 3);
+    cursor: pointer;
+}
