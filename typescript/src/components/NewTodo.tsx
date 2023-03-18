@@ -1,12 +1,11 @@
-import React, {useRef} from "react"
+import React, {useRef, useContext} from "react"
 
 import classes from "./NewTodo.module.css"
+import { TodosContext } from "./store/todos-context"
 
-type Props = {
-    addTodo: Function
-}
+const NewTodo = () => {
 
-const NewTodo = ({addTodo}: Props) => {
+    const todosCtx = useContext(TodosContext)
 
     // With TypeScript, you need to specify what type of HTML element it will connect to
     // As well as set a default ref (can be null)
@@ -21,7 +20,7 @@ const NewTodo = ({addTodo}: Props) => {
             return
         }
 
-        addTodo(enteredText)
+        todosCtx.addTodo(enteredText)
     }
 
     return (
