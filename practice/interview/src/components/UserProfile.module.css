@@ -1,0 +1,22 @@
+.user{
+    background-color: rgb(248, 240, 225);
+    padding: 1em;
+    border-radius: 1em;
+    display: flex;
+    width: 500px;
+    margin: 2em;
+}
+
+.user img {
+    object-fit: cover;
+}
+.user div{
+    margin-left: 1em;
+}
+
+.user h1 {
+    margin: 0
+}
+.user h3 {
+    margin: 0
+}
